@@ -29,7 +29,7 @@ def generate_activity():
     svg = f"""
     <svg width="800" height="240" viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg">
         {get_cyberpunk_styles()}
-        <rect width="800" height="240" fill="url(#bg-gradient)"/>
+        <rect width="800" height="240" class="bg"/>
         
         <!-- Outer Glowing Box -->
         <rect x="20" y="20" width="760" height="200" class="glow-border"/>
@@ -37,7 +37,7 @@ def generate_activity():
         
         <!-- Header -->
         <text x="40" y="60" class="text-title" font-size="24">Contribution Activity</text>
-        <text x="40" y="80" class="text-subtitle">0 contributions in the last year</text>
+        <text x="40" y="80" class="text-subtitle" font-size="12">0 contributions in the last year</text>
         
         <g transform="translate(620, 60)">
             <text x="0" y="10" class="text-subtitle" font-size="10">Less</text>

@@ -44,7 +44,7 @@ def generate_projects(repos):
     svg = f"""
     <svg width="800" height="240" viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg">
         {get_cyberpunk_styles()}
-        <rect width="800" height="240" fill="url(#bg-gradient)"/>
+        <rect width="800" height="240" class="bg"/>
         
         <!-- Outer Glowing Box -->
         <rect x="20" y="20" width="760" height="200" class="glow-border"/>
@@ -52,9 +52,9 @@ def generate_projects(repos):
         
         <!-- Header -->
         <text x="40" y="50" class="text-title" font-size="14" fill="#58a6ff" letter-spacing="2">PROJECTS.LIST</text>
-        <text x="180" y="50" class="text-subtitle">./projects.sh --all</text>
+        <text x="180" y="50" class="text-subtitle" font-size="12">./projects.sh --all</text>
         
-        <text x="750" y="50" text-anchor="end" class="text-subtitle">{len(repos)} pinned</text>
+        <text x="750" y="50" text-anchor="end" class="text-subtitle" font-size="12">{len(repos)} pinned</text>
         
         <line x1="21" y1="60" x2="779" y2="60" stroke="#30363d" stroke-width="1"/>
         

@@ -29,7 +29,7 @@ def generate_terminal(user_data, stats, repos):
     svg = f"""
     <svg width="800" height="400" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
         {get_cyberpunk_styles()}
-        <rect width="800" height="400" fill="url(#bg-gradient)"/>
+        <rect width="800" height="400" class="bg"/>
         
         <!-- Outer Glowing Box -->
         <rect x="20" y="20" width="760" height="360" class="glow-border"/>
@@ -60,42 +60,42 @@ def generate_terminal(user_data, stats, repos):
         <text x="410" y="85" class="text-accent" font-size="10">SYSTEM.INFO</text>
         
         <g transform="translate(410, 110)">
-            <text x="0" y="0" class="text-accent">Subject</text>
-            <text x="120" y="0" class="text-main">{user_data.get('name', login)}</text>
+            <text x="0" y="0" class="text-accent" font-size="12">Subject</text>
+            <text x="120" y="0" class="text-main" font-size="12">{user_data.get('name', login)}</text>
             <line x1="0" y1="5" x2="340" y2="5" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
-            <text x="0" y="25" class="text-accent">Handle</text>
-            <text x="120" y="25" class="text-main">@{login}</text>
+            <text x="0" y="25" class="text-accent" font-size="12">Handle</text>
+            <text x="120" y="25" class="text-main" font-size="12">@{login}</text>
             <line x1="0" y1="30" x2="340" y2="30" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
-            <text x="0" y="50" class="text-accent">Role</text>
-            <text x="120" y="50" class="text-main">Developer</text>
+            <text x="0" y="50" class="text-accent" font-size="12">Role</text>
+            <text x="120" y="50" class="text-main" font-size="12">Developer</text>
             <line x1="0" y1="55" x2="340" y2="55" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
             <!-- Highlighted Status Row -->
             <rect x="-5" y="62" width="350" height="24" fill="#00ffcc" opacity="0.1" rx="4"/>
-            <text x="0" y="78" class="text-glow">Status</text>
-            <text x="120" y="78" class="text-glow">Building | Learning | Shipping</text>
+            <text x="0" y="78" class="text-glow" font-size="12">Status</text>
+            <text x="120" y="78" class="text-glow" font-size="12">Building | Learning | Shipping</text>
             <line x1="0" y1="88" x2="340" y2="88" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
-            <text x="0" y="110" class="text-accent">Languages</text>
-            <text x="120" y="110" class="text-main">{top_languages}</text>
+            <text x="0" y="110" class="text-accent" font-size="12">Languages</text>
+            <text x="120" y="110" class="text-main" font-size="12">{top_languages}</text>
             <line x1="0" y1="115" x2="340" y2="115" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
-            <text x="0" y="135" class="text-accent">Repositories</text>
-            <text x="120" y="135" class="text-main">{repos_count}</text>
+            <text x="0" y="135" class="text-accent" font-size="12">Repositories</text>
+            <text x="120" y="135" class="text-main" font-size="12">{repos_count}</text>
             <line x1="0" y1="140" x2="340" y2="140" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
-            <text x="0" y="160" class="text-accent">Stars</text>
-            <text x="120" y="160" class="text-main">{stars}</text>
+            <text x="0" y="160" class="text-accent" font-size="12">Stars</text>
+            <text x="120" y="160" class="text-main" font-size="12">{stars}</text>
             <line x1="0" y1="165" x2="340" y2="165" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
-            <text x="0" y="185" class="text-accent">Followers</text>
-            <text x="120" y="185" class="text-main">{followers}</text>
+            <text x="0" y="185" class="text-accent" font-size="12">Followers</text>
+            <text x="120" y="185" class="text-main" font-size="12">{followers}</text>
             <line x1="0" y1="190" x2="340" y2="190" stroke="#30363d" stroke-width="1" stroke-dasharray="2,2"/>
             
-            <text x="0" y="210" class="text-accent">Contact</text>
-            <text x="120" y="210" class="text-main">github.com/{login}</text>
+            <text x="0" y="210" class="text-accent" font-size="12">Contact</text>
+            <text x="120" y="210" class="text-main" font-size="12">github.com/{login}</text>
         </g>
     </svg>
     """

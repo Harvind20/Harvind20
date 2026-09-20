@@ -6,41 +6,42 @@ from dotenv import load_dotenv
 load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-USERNAME = os.getenv("GITHUB_USERNAME", "octocat")
 
 headers = {}
 if GITHUB_TOKEN:
     headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
 
-def get_user_data(username):
-    # Fetch user data
+def get_user_data():
+    if GITHUB_TOKEN:
+        # Fetch authenticated user
+        response = requests.get("https://api.github.com/user", headers=headers)
+        if response.status_code == 200:
+            return response.json()
+    
+    # Fallback if no token or token fails
+    username = os.getenv("GITHUB_USERNAME", "octocat")
     url = f"https://api.github.com/users/{username}"
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
-    else:
-        print(f"Error fetching user: {response.status_code}")
-        return {"name": username, "login": username, "bio": "Building with CSS on GitHub", "public_repos": 6, "followers": 24000, "avatar_url": ""}
+    return {"name": "Developer", "login": "developer", "bio": "Building on GitHub", "public_repos": 0, "followers": 0}
 
 def get_repos(username):
     url = f"https://api.github.com/users/{username}/repos?sort=updated&per_page=100"
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
-    else:
-        return []
+    return []
 
 def calculate_stats(repos):
     total_stars = sum(repo.get('stargazers_count', 0) for repo in repos)
     
-    # Calculate languages
     languages = {}
     for repo in repos:
         lang = repo.get('language')
         if lang:
             languages[lang] = languages.get(lang, 0) + 1
             
-    # Sort languages
     sorted_langs = sorted(languages.items(), key=lambda item: item[1], reverse=True)
     
     return {
@@ -55,9 +56,12 @@ from svg_components.stack import generate_stack
 from svg_components.activity import generate_activity
 
 def main():
-    print(f"Fetching data for {USERNAME}...")
-    user_data = get_user_data(USERNAME)
-    repos = get_repos(USERNAME)
+    print("Fetching user data...")
+    user_data = get_user_data()
+    username = user_data.get('login', 'octocat')
+    print(f"Authenticated as {username}")
+    
+    repos = get_repos(username)
     stats = calculate_stats(repos)
     
     # Pass 1: generate all SVGs

@@ -16,8 +16,8 @@ def generate_stack(languages):
         
         bars += f"""
         <circle cx="45" cy="{y_offset - 4}" r="4" fill="{color}"/>
-        <text x="65" y="{y_offset}" class="text-main" font-weight="bold">{lang}</text>
-        <text x="240" y="{y_offset}" class="text-accent" fill="{color}">{percent}%</text>
+        <text x="65" y="{y_offset}" class="text-main" font-weight="bold" font-size="14">{lang}</text>
+        <text x="240" y="{y_offset}" class="text-accent" fill="{color}" font-size="14">{percent}%</text>
         
         <rect x="280" y="{y_offset - 8}" width="450" height="8" class="progress-bg"/>
         <rect x="280" y="{y_offset - 8}" width="{450 * (percent/100)}" height="8" class="progress-fill" fill="{color}"/>
@@ -26,7 +26,7 @@ def generate_stack(languages):
     svg = f"""
     <svg width="800" height="240" viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg">
         {get_cyberpunk_styles()}
-        <rect width="800" height="240" fill="url(#bg-gradient)"/>
+        <rect width="800" height="240" class="bg"/>
         
         <!-- Outer Glowing Box -->
         <rect x="20" y="20" width="760" height="200" class="glow-border"/>
@@ -34,9 +34,9 @@ def generate_stack(languages):
         
         <!-- Header -->
         <text x="40" y="60" class="text-title" font-size="24">Language Stack</text>
-        <text x="40" y="80" class="text-subtitle">Repository-weighted technologies</text>
+        <text x="40" y="80" class="text-subtitle" font-size="12">Repository-weighted technologies</text>
         
-        <text x="750" y="60" text-anchor="end" class="text-accent" fill="#58a6ff">&gt; stack.scan</text>
+        <text x="750" y="60" text-anchor="end" class="text-accent" fill="#58a6ff" font-size="12">&gt; stack.scan</text>
         
         {bars}
     </svg>
