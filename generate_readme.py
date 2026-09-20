@@ -40,7 +40,7 @@ def calculate_stats(repos):
     sorted_langs = sorted(languages.items(), key=lambda item: item[1], reverse=True)
     return {"languages": sorted_langs}
 
-def generate_ascii_avatar(url, width=30):
+def generate_ascii_avatar(url, width=70):
     if not url: return []
     try:
         response = requests.get(url)
@@ -59,7 +59,6 @@ def generate_ascii_avatar(url, width=30):
                 r, g, b = img.getpixel((x, y))
                 gray = int(0.2989 * r + 0.5870 * g + 0.1140 * b)
                 char = chars[gray * len(chars) // 256]
-                # Use a solid block for better color representation if we want, or the char
                 row.append((char, f"#{r:02x}{g:02x}{b:02x}"))
             ascii_pixels.append(row)
         return ascii_pixels
@@ -69,32 +68,40 @@ def generate_ascii_avatar(url, width=30):
 
 def generate_banner(username, ascii_pixels):
     # Generate figlet text
-    figlet_text = pyfiglet.figlet_format(username.upper(), font="slant").split('\\n')
+    figlet_text = pyfiglet.figlet_format(username.upper(), font="standard").split('\n')
     
-    # Render avatar to tspan strings
-    avatar_svg = ""
-    for i, row in enumerate(ascii_pixels):
-        y_pos = 40 + (i * 12)
-        row_content = "".join([f'<tspan fill="{color}">{char}</tspan>' for char, color in row])
-        avatar_svg += f'<text x="20" y="{y_pos}" font-family="monospace" font-size="10" xml:space="preserve">{row_content}</text>\\n'
-    
-    # Render figlet text to right of avatar
+    # Render figlet text (Above)
     text_svg = ""
+    start_y = 60
     for i, line in enumerate(figlet_text):
-        y_pos = 80 + (i * 16)
-        # Prevent XML errors with special chars
+        if not line.strip(): continue
+        y_pos = start_y + (i * 16)
         clean_line = line.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-        text_svg += f'<text x="320" y="{y_pos}" font-family="monospace" font-size="14" fill="#00ff00" xml:space="preserve">{clean_line}</text>\\n'
+        # Blue/cyan theme
+        text_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="14" fill="#00ccff" xml:space="preserve">{clean_line}</text>\\n'
 
+    # Avatar (BIG below)
+    avatar_svg = ""
+    avatar_start_y = start_y + (len(figlet_text) * 16) + 20
+    for i, row in enumerate(ascii_pixels):
+        y_pos = avatar_start_y + (i * 10)
+        row_content = "".join([f'<tspan fill="{color}">{char}</tspan>' for char, color in row])
+        avatar_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="10" xml:space="preserve">{row_content}</text>\\n'
+    
+    height = avatar_start_y + (len(ascii_pixels) * 10) + 40
+    
     svg = f"""
-    <svg width="800" height="260" viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+    <svg width="800" height="{height}" viewBox="0 0 800 {height}" xmlns="http://www.w3.org/2000/svg">
         <style>
             .bg {{ fill: #0d1117; }}
             text {{ font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }}
+            .border {{ fill: none; stroke: #00ff00; stroke-width: 2px; stroke-dasharray: 10 5; rx: 8px; }}
         </style>
-        <rect width="800" height="260" class="bg"/>
-        {avatar_svg}
+        <rect width="800" height="{height}" class="bg"/>
+        <!-- Green box container -->
+        <rect x="20" y="20" width="760" height="{height - 40}" class="border"/>
         {text_svg}
+        {avatar_svg}
     </svg>
     """
     return svg
@@ -104,7 +111,7 @@ def generate_stack(languages):
     total = sum(count for _, count in languages)
     
     y_start = 50
-    svg_content += f'<text x="20" y="30" font-size="16" fill="#58a6ff" font-weight="bold" xml:space="preserve">=== SYSTEM LANGUAGES SECURED ===</text>\\n'
+    svg_content += f'<text x="20" y="30" font-size="16" fill="#00ccff" font-weight="bold" xml:space="preserve">=== Tech Stack ===</text>\\n'
     
     for i, (lang, count) in enumerate(languages):
         percent = (count / total) * 100
@@ -112,11 +119,11 @@ def generate_stack(languages):
         bar_filled = "█" * bar_len
         bar_empty = " " * (50 - bar_len)
         
-        colors = ["#ff5f56", "#ffbd2e", "#27c93f", "#58a6ff", "#9e60ff"]
+        colors = ["#00ccff", "#0099cc", "#006699", "#33ccff", "#66d9ff"]
         color = colors[i % len(colors)]
         
         y_pos = y_start + (i * 20)
-        svg_content += f'<text x="20" y="{y_pos}" font-size="14" fill="#c9d1d9" xml:space="preserve">{lang.ljust(12)} [<tspan fill="{color}">{bar_filled}</tspan>{bar_empty}] {percent:4.1f}%</text>\\n'
+        svg_content += f'<text x="20" y="{y_pos}" font-size="14" fill="#c9d1d9" xml:space="preserve">{lang.ljust(12)} [<tspan fill="{color}">{bar_filled}</tspan>{bar_empty}]</text>\\n'
 
     height = max(100, y_start + (len(languages) * 20) + 20)
     
