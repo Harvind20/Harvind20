@@ -149,25 +149,29 @@ def generate_stack(languages):
         svg_content += f'<text x="20" y="{y_pos}" font-size="14" fill="#c9d1d9" xml:space="preserve">{lang.ljust(12)} [<tspan fill="{color}">{bar_filled}</tspan>{bar_empty}]</text>\\n'
 
     # Terminal Section on the right
-    term_x = 420
+    term_x = 380
     term_y = 50
     term_content = [
-        "harvind@github:~",
-        "---------------------------------------",
-        "> Role       | Full Stack Developer",
-        "> Location   | Planet Earth",
-        "> Email      | you@example.com",
-        "> LinkedIn   | linkedin.com/in/you",
-        "> Portfolio  | yourwebsite.com",
-        "---------------------------------------",
-        "> Currently  | Building retro ascii tools",
-        "> Learning   | Advanced systems"
+        "harvind20@github:~",
+        "------------------------------------------------",
+        "> Role       | Aspiring Software Engineer",
+        "> Location   | Kuala Lumpur, Malaysia",
+        "> Email      | harvindddddd@gmail.com",
+        '> LinkedIn   | <a href="http://linkedin.com/in/harvind-s-397871319" target="_blank"><tspan fill="#00ffcc" text-decoration="underline">linkedin.com/in/harvind-s-397871319</tspan></a>',
+        '> Portfolio  | <a href="https://portfolio-harvinds-vault.vercel.app" target="_blank"><tspan fill="#00ffcc" text-decoration="underline">portfolio-harvinds-vault.vercel.app</tspan></a>',
+        "------------------------------------------------",
+        "> Currently  | Developing Websites &amp; Systems",
+        "> Interests  | AI / Machine Learning &amp;",
+        "             | Full Stack App Development",
+        "",
+        '<tspan font-style="italic" fill="#77aaff">"To understand what recursion is, you must</tspan>',
+        '<tspan font-style="italic" fill="#77aaff"> first understand what recursion is"</tspan>'
     ]
     for i, line in enumerate(term_content):
-        y_pos = term_y + (i * 24)
-        svg_content += f'<text x="{term_x}" y="{y_pos}" font-size="14" fill="#00ccff" font-family="monospace" xml:space="preserve">{line}</text>\\n'
+        y_pos = term_y + (i * 20)
+        svg_content += f'<text x="{term_x}" y="{y_pos}" font-size="12" fill="#00ccff" font-family="monospace" xml:space="preserve">{line}</text>\\n'
 
-    height = max(250, y_start + (len(languages) * 20) + 40, term_y + (len(term_content) * 24) + 40)
+    height = max(350, y_start + (len(languages) * 20) + 40, term_y + (len(term_content) * 20) + 40)
     
     svg = f"""
     <svg width="800" height="{height}" viewBox="0 0 800 {height}" xmlns="http://www.w3.org/2000/svg">
@@ -175,10 +179,11 @@ def generate_stack(languages):
             .bg {{ fill: #0d1117; }}
             text {{ font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }}
             .term-border {{ fill: none; stroke: #0055ff; stroke-width: 2px; rx: 6px; }}
+            a {{ cursor: pointer; }}
         </style>
         <rect width="800" height="{height}" class="bg"/>
         <!-- Terminal Frame -->
-        <rect x="400" y="20" width="380" height="{height - 40}" class="term-border"/>
+        <rect x="360" y="20" width="420" height="{height - 40}" class="term-border"/>
         {svg_content}
     </svg>
     """
