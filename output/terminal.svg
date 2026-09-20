@@ -51,7 +51,7 @@
         
         <text x="400" y="44" text-anchor="middle" class="text-accent" font-size="12">octocat@github ~ $ ./profile-scan --live</text>
         
-        <text x="750" y="44" text-anchor="end" class="text-glow" fill="#00ffcc" font-size="12">● LIVE</text>
+        <text x="750" y="44" text-anchor="end" class="text-glow" fill="#00ffcc" font-size="12">● LIVE<animate attributeName="opacity" values="1;0.2;1" dur="2s" repeatCount="indefinite" /></text>
         
         <line x1="21" y1="55" x2="779" y2="55" stroke="#30363d" stroke-width="1"/>
         
@@ -71,8 +71,12 @@
 
         
         <!-- A glowing horizontal line simulating a scanner -->
-        <rect x="35" y="150" width="350" height="2" fill="#00ffcc" filter="url(#neon-glow)"/>
-        <rect x="35" y="140" width="350" height="20" fill="#00ffcc" opacity="0.1"/>
+        <rect x="35" y="75" width="350" height="2" fill="#00ffcc" filter="url(#neon-glow)">
+            <animate attributeName="y" values="75;350;75" dur="4s" repeatCount="indefinite" />
+        </rect>
+        <rect x="35" y="65" width="350" height="20" fill="#00ffcc" opacity="0.1">
+            <animate attributeName="y" values="65;340;65" dur="4s" repeatCount="indefinite" />
+        </rect>
         
         <!-- Right Panel: System Info -->
         <rect x="400" y="70" width="365" height="295" fill="transparent" stroke="#30363d" stroke-width="1" rx="4"/>

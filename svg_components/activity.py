@@ -11,12 +11,18 @@ def generate_activity():
             
             # Randomly highlight some dots for a cyberpunk feel
             val = random.random()
+            animate_tag = ""
             if val > 0.95:
                 fill = "#00ffcc"
                 glow = 'filter="url(#neon-glow)"'
+                dur = round(random.uniform(2.0, 4.0), 1)
+                animate_tag = f'<animate attributeName="opacity" values="1;0.4;1" dur="{dur}s" repeatCount="indefinite" />'
             elif val > 0.8:
                 fill = "#58a6ff"
                 glow = ""
+                if random.random() > 0.5:
+                    dur = round(random.uniform(3.0, 6.0), 1)
+                    animate_tag = f'<animate attributeName="opacity" values="1;0.6;1" dur="{dur}s" repeatCount="indefinite" />'
             elif val > 0.6:
                 fill = "#21262d"
                 glow = ""
@@ -24,7 +30,7 @@ def generate_activity():
                 fill = "#161b22"
                 glow = ""
                 
-            heatmap += f'<rect x="{x}" y="{y}" width="10" height="10" fill="{fill}" stroke="#30363d" stroke-width="1" rx="2" {glow}/>\n'
+            heatmap += f'<rect x="{x}" y="{y}" width="10" height="10" fill="{fill}" stroke="#30363d" stroke-width="1" rx="2" {glow}>{animate_tag}</rect>\n'
 
     svg = f"""
     <svg width="800" height="240" viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg">
