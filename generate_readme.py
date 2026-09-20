@@ -1,11 +1,11 @@
 import os
 import requests
-import json
-from dotenv import load_dotenv
-
-load_dotenv()
+from io import BytesIO
+from PIL import Image
+import pyfiglet
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+USERNAME = os.getenv("GITHUB_USERNAME", "Harvind20")
 
 headers = {}
 if GITHUB_TOKEN:
@@ -13,18 +13,15 @@ if GITHUB_TOKEN:
 
 def get_user_data():
     if GITHUB_TOKEN:
-        # Fetch authenticated user
         response = requests.get("https://api.github.com/user", headers=headers)
         if response.status_code == 200:
             return response.json()
     
-    # Fallback if no token or token fails
-    username = os.getenv("GITHUB_USERNAME", "octocat")
-    url = f"https://api.github.com/users/{username}"
+    url = f"https://api.github.com/users/{USERNAME}"
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
-    return {"name": "Developer", "login": "developer", "bio": "Building on GitHub", "public_repos": 0, "followers": 0}
+    return {"login": USERNAME, "avatar_url": ""}
 
 def get_repos(username):
     url = f"https://api.github.com/users/{username}/repos?sort=updated&per_page=100"
@@ -34,8 +31,6 @@ def get_repos(username):
     return []
 
 def calculate_stats(repos):
-    total_stars = sum(repo.get('stargazers_count', 0) for repo in repos)
-    
     languages = {}
     for repo in repos:
         lang = repo.get('language')
@@ -43,45 +38,119 @@ def calculate_stats(repos):
             languages[lang] = languages.get(lang, 0) + 1
             
     sorted_langs = sorted(languages.items(), key=lambda item: item[1], reverse=True)
-    
-    return {
-        "total_stars": total_stars,
-        "languages": sorted_langs
-    }
+    return {"languages": sorted_langs}
 
-from svg_components.header import generate_header
-from svg_components.terminal import generate_terminal
-from svg_components.projects import generate_projects
-from svg_components.stack import generate_stack
-from svg_components.activity import generate_activity
+def generate_ascii_avatar(url, width=30):
+    if not url: return []
+    try:
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+        aspect_ratio = img.height / img.width
+        # terminal characters are about twice as tall as they are wide
+        new_height = int(aspect_ratio * width * 0.5)
+        img = img.resize((width, new_height))
+        img = img.convert('RGB')
+        
+        chars = ["@", "%", "#", "*", "+", "=", "-", ":", ".", " "]
+        ascii_pixels = []
+        for y in range(new_height):
+            row = []
+            for x in range(width):
+                r, g, b = img.getpixel((x, y))
+                gray = int(0.2989 * r + 0.5870 * g + 0.1140 * b)
+                char = chars[gray * len(chars) // 256]
+                # Use a solid block for better color representation if we want, or the char
+                row.append((char, f"#{r:02x}{g:02x}{b:02x}"))
+            ascii_pixels.append(row)
+        return ascii_pixels
+    except Exception as e:
+        print(f"Error generating avatar: {e}")
+        return []
+
+def generate_banner(username, ascii_pixels):
+    # Generate figlet text
+    figlet_text = pyfiglet.figlet_format(username.upper(), font="slant").split('\\n')
+    
+    # Render avatar to tspan strings
+    avatar_svg = ""
+    for i, row in enumerate(ascii_pixels):
+        y_pos = 40 + (i * 12)
+        row_content = "".join([f'<tspan fill="{color}">{char}</tspan>' for char, color in row])
+        avatar_svg += f'<text x="20" y="{y_pos}" font-family="monospace" font-size="10" xml:space="preserve">{row_content}</text>\\n'
+    
+    # Render figlet text to right of avatar
+    text_svg = ""
+    for i, line in enumerate(figlet_text):
+        y_pos = 80 + (i * 16)
+        # Prevent XML errors with special chars
+        clean_line = line.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        text_svg += f'<text x="320" y="{y_pos}" font-family="monospace" font-size="14" fill="#00ff00" xml:space="preserve">{clean_line}</text>\\n'
+
+    svg = f"""
+    <svg width="800" height="260" viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .bg {{ fill: #0d1117; }}
+            text {{ font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }}
+        </style>
+        <rect width="800" height="260" class="bg"/>
+        {avatar_svg}
+        {text_svg}
+    </svg>
+    """
+    return svg
+
+def generate_stack(languages):
+    svg_content = ""
+    total = sum(count for _, count in languages)
+    
+    y_start = 50
+    svg_content += f'<text x="20" y="30" font-size="16" fill="#58a6ff" font-weight="bold" xml:space="preserve">=== SYSTEM LANGUAGES SECURED ===</text>\\n'
+    
+    for i, (lang, count) in enumerate(languages):
+        percent = (count / total) * 100
+        bar_len = int(percent / 2) # max 50 chars
+        bar_filled = "█" * bar_len
+        bar_empty = " " * (50 - bar_len)
+        
+        colors = ["#ff5f56", "#ffbd2e", "#27c93f", "#58a6ff", "#9e60ff"]
+        color = colors[i % len(colors)]
+        
+        y_pos = y_start + (i * 20)
+        svg_content += f'<text x="20" y="{y_pos}" font-size="14" fill="#c9d1d9" xml:space="preserve">{lang.ljust(12)} [<tspan fill="{color}">{bar_filled}</tspan>{bar_empty}] {percent:4.1f}%</text>\\n'
+
+    height = max(100, y_start + (len(languages) * 20) + 20)
+    
+    svg = f"""
+    <svg width="800" height="{height}" viewBox="0 0 800 {height}" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .bg {{ fill: #0d1117; }}
+            text {{ font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }}
+        </style>
+        <rect width="800" height="{height}" class="bg"/>
+        {svg_content}
+    </svg>
+    """
+    return svg
 
 def main():
     print("Fetching user data...")
     user_data = get_user_data()
-    username = user_data.get('login', 'octocat')
+    username = user_data.get('login', USERNAME)
     print(f"Authenticated as {username}")
     
     repos = get_repos(username)
     stats = calculate_stats(repos)
     
-    # Pass 1: generate all SVGs
-    print("Generating SVGs...")
     os.makedirs("output", exist_ok=True)
     
-    with open("output/header.svg", "w", encoding="utf-8") as f:
-        f.write(generate_header(user_data, stats))
-        
-    with open("output/terminal.svg", "w", encoding="utf-8") as f:
-        f.write(generate_terminal(user_data, stats, repos))
-        
-    with open("output/projects.svg", "w", encoding="utf-8") as f:
-        f.write(generate_projects(repos[:2]))
+    print("Generating ASCII Avatar...")
+    ascii_pixels = generate_ascii_avatar(user_data.get('avatar_url'))
+    
+    with open("output/banner.svg", "w", encoding="utf-8") as f:
+        f.write(generate_banner(username, ascii_pixels))
         
     with open("output/stack.svg", "w", encoding="utf-8") as f:
         f.write(generate_stack(stats['languages']))
-        
-    with open("output/activity.svg", "w", encoding="utf-8") as f:
-        f.write(generate_activity())
 
     print("Generation complete! Check the output/ folder.")
 

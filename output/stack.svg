@@ -1,0 +1,10 @@
+
+    <svg width="800" height="210" viewBox="0 0 800 210" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .bg { fill: #0d1117; }
+            text { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }
+        </style>
+        <rect width="800" height="210" class="bg"/>
+        <text x="20" y="30" font-size="16" fill="#58a6ff" font-weight="bold" xml:space="preserve">=== SYSTEM LANGUAGES SECURED ===</text>\n<text x="20" y="50" font-size="14" fill="#c9d1d9" xml:space="preserve">Java         [<tspan fill="#ff5f56">████████████</tspan>                                      ] 25.0%</text>\n<text x="20" y="70" font-size="14" fill="#c9d1d9" xml:space="preserve">Python       [<tspan fill="#ffbd2e">██████</tspan>                                            ] 12.5%</text>\n<text x="20" y="90" font-size="14" fill="#c9d1d9" xml:space="preserve">JavaScript   [<tspan fill="#27c93f">██████</tspan>                                            ] 12.5%</text>\n<text x="20" y="110" font-size="14" fill="#c9d1d9" xml:space="preserve">CSS          [<tspan fill="#58a6ff">██████</tspan>                                            ] 12.5%</text>\n<text x="20" y="130" font-size="14" fill="#c9d1d9" xml:space="preserve">C            [<tspan fill="#9e60ff">██████</tspan>                                            ] 12.5%</text>\n<text x="20" y="150" font-size="14" fill="#c9d1d9" xml:space="preserve">C++          [<tspan fill="#ff5f56">██████</tspan>                                            ] 12.5%</text>\n<text x="20" y="170" font-size="14" fill="#c9d1d9" xml:space="preserve">HTML         [<tspan fill="#ffbd2e">██████</tspan>                                            ] 12.5%</text>\n
+    </svg>
+    
