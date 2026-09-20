@@ -40,7 +40,7 @@ def calculate_stats(repos):
     sorted_langs = sorted(languages.items(), key=lambda item: item[1], reverse=True)
     return {"languages": sorted_langs}
 
-def generate_ascii_avatar(url, width=70):
+def generate_ascii_avatar(url, width=120):
     if not url: return []
     try:
         response = requests.get(url)
@@ -67,8 +67,8 @@ def generate_ascii_avatar(url, width=70):
         return []
 
 def generate_banner(username, ascii_pixels):
-    # Generate figlet text
-    figlet_text = pyfiglet.figlet_format(username.upper(), font="standard").split('\n')
+    # Generate figlet text with highly detailed font
+    figlet_text = pyfiglet.figlet_format(username.upper(), font="banner3-D").split('\n')
     
     # Render figlet text (Above)
     text_svg = ""
@@ -78,7 +78,7 @@ def generate_banner(username, ascii_pixels):
         y_pos = start_y + (i * 16)
         clean_line = line.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
         # Blue/cyan theme
-        text_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="14" fill="#00ccff" xml:space="preserve">{clean_line}</text>\\n'
+        text_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="14" fill="#00ccff" font-weight="bold" xml:space="preserve">{clean_line}</text>\\n'
 
     # Avatar (BIG below)
     avatar_svg = ""
@@ -111,7 +111,14 @@ def generate_stack(languages):
     total = sum(count for _, count in languages)
     
     y_start = 50
-    svg_content += f'<text x="20" y="30" font-size="16" fill="#00ccff" font-weight="bold" xml:space="preserve">=== Tech Stack ===</text>\\n'
+    title_text = pyfiglet.figlet_format("TECH STACK", font="small").split('\n')
+    for i, line in enumerate(title_text):
+        if not line.strip(): continue
+        y_pos = y_start + (i * 16)
+        clean_line = line.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        svg_content += f'<text x="20" y="{y_pos}" font-family="monospace" font-size="14" fill="#00ccff" font-weight="bold" xml:space="preserve">{clean_line}</text>\\n'
+        
+    y_start = y_start + (len(title_text) * 16) + 20
     
     for i, (lang, count) in enumerate(languages):
         percent = (count / total) * 100
@@ -125,7 +132,7 @@ def generate_stack(languages):
         y_pos = y_start + (i * 20)
         svg_content += f'<text x="20" y="{y_pos}" font-size="14" fill="#c9d1d9" xml:space="preserve">{lang.ljust(12)} [<tspan fill="{color}">{bar_filled}</tspan>{bar_empty}]</text>\\n'
 
-    height = max(100, y_start + (len(languages) * 20) + 20)
+    height = max(100, y_start + (len(languages) * 20) + 40)
     
     svg = f"""
     <svg width="800" height="{height}" viewBox="0 0 800 {height}" xmlns="http://www.w3.org/2000/svg">
