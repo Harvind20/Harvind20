@@ -48,12 +48,13 @@
         
         <!-- Avatar Placeholder -->
         <circle cx="100" cy="100" r="45" fill="#21262d" stroke="#58a6ff" stroke-width="2"/>
-        <text x="100" y="105" text-anchor="middle" class="text-accent" font-size="24">@O</text>
+        <text x="100" y="105" text-anchor="middle" class="text-accent" font-size="24">@H</text>
         
         <!-- Handle & Name -->
-        <text x="170" y="65" class="text-accent" font-size="13">@octocat</text>
-        <text x="170" y="100" class="text-title" font-size="28">The Octocat</text>
-        <text x="170" y="125" class="text-subtitle" font-size="12">Building cool things on GitHub.</text>
+        <text x="170" y="65" class="text-accent" font-size="13">@Harvind20</text>
+        <text x="170" y="100" class="text-title" font-size="28">None</text>
+        <text x="170" y="125" class="text-subtitle" font-size="12">im just a student dont hack me pls
+</text>
         
         <!-- Tags -->
         <g transform="translate(170, 145)">
@@ -66,7 +67,7 @@
         
         <!-- Total Stars -->
         <g transform="translate(650, 100)">
-            <text x="50" y="-10" text-anchor="middle" class="text-title" fill="#58a6ff" font-size="32">22192</text>
+            <text x="50" y="-10" text-anchor="middle" class="text-title" fill="#58a6ff" font-size="32">0</text>
             <text x="50" y="15" text-anchor="middle" class="text-subtitle" font-size="10" font-weight="600" letter-spacing="2">TOTAL STARS</text>
         </g>
     </svg>

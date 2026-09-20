@@ -52,25 +52,25 @@
         
         
         <circle cx="45" cy="106" r="4" fill="#9e60ff"/>
-        <text x="65" y="110" class="text-main" font-weight="bold" font-size="14">CSS</text>
-        <text x="240" y="110" class="text-accent" fill="#9e60ff" font-size="14">33%</text>
+        <text x="65" y="110" class="text-main" font-weight="bold" font-size="14">Java</text>
+        <text x="240" y="110" class="text-accent" fill="#9e60ff" font-size="14">25%</text>
         
         <rect x="280" y="102" width="450" height="8" class="progress-bg"/>
-        <rect x="280" y="102" width="148.5" height="8" class="progress-fill" fill="#9e60ff"/>
+        <rect x="280" y="102" width="112.5" height="8" class="progress-fill" fill="#9e60ff"/>
         
         <circle cx="45" cy="141" r="4" fill="#ff5a36"/>
-        <text x="65" y="145" class="text-main" font-weight="bold" font-size="14">Ruby</text>
-        <text x="240" y="145" class="text-accent" fill="#ff5a36" font-size="14">33%</text>
+        <text x="65" y="145" class="text-main" font-weight="bold" font-size="14">Python</text>
+        <text x="240" y="145" class="text-accent" fill="#ff5a36" font-size="14">12%</text>
         
         <rect x="280" y="137" width="450" height="8" class="progress-bg"/>
-        <rect x="280" y="137" width="148.5" height="8" class="progress-fill" fill="#ff5a36"/>
+        <rect x="280" y="137" width="54.0" height="8" class="progress-fill" fill="#ff5a36"/>
         
         <circle cx="45" cy="176" r="4" fill="#e3b341"/>
-        <text x="65" y="180" class="text-main" font-weight="bold" font-size="14">HTML</text>
-        <text x="240" y="180" class="text-accent" fill="#e3b341" font-size="14">33%</text>
+        <text x="65" y="180" class="text-main" font-weight="bold" font-size="14">JavaScript</text>
+        <text x="240" y="180" class="text-accent" fill="#e3b341" font-size="14">12%</text>
         
         <rect x="280" y="172" width="450" height="8" class="progress-bg"/>
-        <rect x="280" y="172" width="148.5" height="8" class="progress-fill" fill="#e3b341"/>
+        <rect x="280" y="172" width="54.0" height="8" class="progress-fill" fill="#e3b341"/>
         
     </svg>
     
