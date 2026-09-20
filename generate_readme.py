@@ -67,8 +67,9 @@ def generate_ascii_avatar(url, width=120):
         return []
 
 def generate_banner(username, url):
+    spaced_username = " ".join(list(username.upper()))
     # Generate figlet text with alligator2 font, set width to 200 to ensure it fits on one line
-    figlet_text = pyfiglet.figlet_format(username.upper(), font="alligator2", width=200).split('\n')
+    figlet_text = pyfiglet.figlet_format(spaced_username, font="alligator2", width=200).split('\n')
     
     # Calculate exact width of the name in characters
     name_width = max(len(line) for line in figlet_text)
@@ -81,6 +82,9 @@ def generate_banner(username, url):
     font_size = int((720 / name_width) / 0.6)
     font_size = min(max(font_size, 8), 16)
     char_height = int(font_size * 1.15)
+    char_width = font_size * 0.6
+    actual_width = name_width * char_width
+    x_offset = 20 + (760 - actual_width) / 2
     
     # Render figlet text (Above)
     text_svg = ""
@@ -90,7 +94,7 @@ def generate_banner(username, url):
         y_pos = start_y + (i * char_height)
         clean_line = line.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
         # Blue/cyan theme
-        text_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="{font_size}" fill="#00ccff" font-weight="bold" xml:space="preserve">{clean_line}</text>\\n'
+        text_svg += f'<text x="{x_offset}" y="{y_pos}" font-family="monospace" font-size="{font_size}" fill="#00ccff" font-weight="bold" xml:space="preserve">{clean_line}</text>\\n'
 
     # Avatar (BIG below)
     avatar_svg = ""
@@ -98,7 +102,7 @@ def generate_banner(username, url):
     for i, row in enumerate(ascii_pixels):
         y_pos = avatar_start_y + (i * char_height)
         row_content = "".join([f'<tspan fill="{color}">{char}</tspan>' for char, color in row])
-        avatar_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="{font_size}" font-weight="bold" xml:space="preserve">{row_content}</text>\\n'
+        avatar_svg += f'<text x="{x_offset}" y="{y_pos}" font-family="monospace" font-size="{font_size}" font-weight="bold" xml:space="preserve">{row_content}</text>\\n'
     
     height = avatar_start_y + (len(ascii_pixels) * char_height) + 40
     
@@ -107,10 +111,10 @@ def generate_banner(username, url):
         <style>
             .bg {{ fill: #0d1117; }}
             text {{ font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }}
-            .border {{ fill: none; stroke: #00ff00; stroke-width: 2px; stroke-dasharray: 10 5; rx: 8px; }}
+            .border {{ fill: none; stroke: #0055ff; stroke-width: 2px; stroke-dasharray: 10 5; rx: 8px; }}
         </style>
         <rect width="800" height="{height}" class="bg"/>
-        <!-- Green box container -->
+        <!-- Dark Neon Blue box container -->
         <rect x="20" y="20" width="760" height="{height - 40}" class="border"/>
         {text_svg}
         {avatar_svg}
@@ -134,9 +138,9 @@ def generate_stack(languages):
     
     for i, (lang, count) in enumerate(languages):
         percent = (count / total) * 100
-        bar_len = int(percent / 2) # max 50 chars
+        bar_len = int(percent / 3) # Scaled down for half width
         bar_filled = "█" * bar_len
-        bar_empty = " " * (50 - bar_len)
+        bar_empty = " " * (33 - bar_len)
         
         colors = ["#00ccff", "#0099cc", "#006699", "#33ccff", "#66d9ff"]
         color = colors[i % len(colors)]
@@ -144,15 +148,37 @@ def generate_stack(languages):
         y_pos = y_start + (i * 20)
         svg_content += f'<text x="20" y="{y_pos}" font-size="14" fill="#c9d1d9" xml:space="preserve">{lang.ljust(12)} [<tspan fill="{color}">{bar_filled}</tspan>{bar_empty}]</text>\\n'
 
-    height = max(100, y_start + (len(languages) * 20) + 40)
+    # Terminal Section on the right
+    term_x = 420
+    term_y = 50
+    term_content = [
+        "harvind@github:~",
+        "---------------------------------------",
+        "> Role       | Full Stack Developer",
+        "> Location   | Planet Earth",
+        "> Email      | you@example.com",
+        "> LinkedIn   | linkedin.com/in/you",
+        "> Portfolio  | yourwebsite.com",
+        "---------------------------------------",
+        "> Currently  | Building retro ascii tools",
+        "> Learning   | Advanced systems"
+    ]
+    for i, line in enumerate(term_content):
+        y_pos = term_y + (i * 24)
+        svg_content += f'<text x="{term_x}" y="{y_pos}" font-size="14" fill="#00ccff" font-family="monospace" xml:space="preserve">{line}</text>\\n'
+
+    height = max(250, y_start + (len(languages) * 20) + 40, term_y + (len(term_content) * 24) + 40)
     
     svg = f"""
     <svg width="800" height="{height}" viewBox="0 0 800 {height}" xmlns="http://www.w3.org/2000/svg">
         <style>
             .bg {{ fill: #0d1117; }}
             text {{ font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }}
+            .term-border {{ fill: none; stroke: #0055ff; stroke-width: 2px; rx: 6px; }}
         </style>
         <rect width="800" height="{height}" class="bg"/>
+        <!-- Terminal Frame -->
+        <rect x="400" y="20" width="380" height="{height - 40}" class="term-border"/>
         {svg_content}
     </svg>
     """
