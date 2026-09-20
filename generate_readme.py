@@ -66,29 +66,41 @@ def generate_ascii_avatar(url, width=120):
         print(f"Error generating avatar: {e}")
         return []
 
-def generate_banner(username, ascii_pixels):
-    # Generate figlet text with highly detailed font
-    figlet_text = pyfiglet.figlet_format(username.upper(), font="banner3-D").split('\n')
+def generate_banner(username, url):
+    # Generate figlet text with alligator2 font, set width to 200 to ensure it fits on one line
+    figlet_text = pyfiglet.figlet_format(username.upper(), font="alligator2", width=200).split('\n')
+    
+    # Calculate exact width of the name in characters
+    name_width = max(len(line) for line in figlet_text)
+    if name_width < 10: name_width = 10
+    
+    # Generate avatar to perfectly match the width of the name
+    ascii_pixels = generate_ascii_avatar(url, width=name_width)
+    
+    # Calculate appropriate font size to fill the box width
+    font_size = int((720 / name_width) / 0.6)
+    font_size = min(max(font_size, 8), 16)
+    char_height = int(font_size * 1.15)
     
     # Render figlet text (Above)
     text_svg = ""
     start_y = 60
     for i, line in enumerate(figlet_text):
         if not line.strip(): continue
-        y_pos = start_y + (i * 16)
+        y_pos = start_y + (i * char_height)
         clean_line = line.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
         # Blue/cyan theme
-        text_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="14" fill="#00ccff" font-weight="bold" xml:space="preserve">{clean_line}</text>\\n'
+        text_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="{font_size}" fill="#00ccff" font-weight="bold" xml:space="preserve">{clean_line}</text>\\n'
 
     # Avatar (BIG below)
     avatar_svg = ""
-    avatar_start_y = start_y + (len(figlet_text) * 16) + 20
+    avatar_start_y = start_y + (len(figlet_text) * char_height) + 20
     for i, row in enumerate(ascii_pixels):
-        y_pos = avatar_start_y + (i * 10)
+        y_pos = avatar_start_y + (i * char_height)
         row_content = "".join([f'<tspan fill="{color}">{char}</tspan>' for char, color in row])
-        avatar_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="10" xml:space="preserve">{row_content}</text>\\n'
+        avatar_svg += f'<text x="40" y="{y_pos}" font-family="monospace" font-size="{font_size}" font-weight="bold" xml:space="preserve">{row_content}</text>\\n'
     
-    height = avatar_start_y + (len(ascii_pixels) * 10) + 40
+    height = avatar_start_y + (len(ascii_pixels) * char_height) + 40
     
     svg = f"""
     <svg width="800" height="{height}" viewBox="0 0 800 {height}" xmlns="http://www.w3.org/2000/svg">
@@ -157,12 +169,11 @@ def main():
     
     os.makedirs("output", exist_ok=True)
     
-    print("Generating ASCII Avatar...")
-    ascii_pixels = generate_ascii_avatar(user_data.get('avatar_url'))
-    
+    print("Generating Banner...")
     with open("output/banner.svg", "w", encoding="utf-8") as f:
-        f.write(generate_banner(username, ascii_pixels))
+        f.write(generate_banner(username, user_data.get('avatar_url')))
         
+    print("Generating Stack...")
     with open("output/stack.svg", "w", encoding="utf-8") as f:
         f.write(generate_stack(stats['languages']))
 
