@@ -138,9 +138,9 @@ def generate_stack(languages):
     
     for i, (lang, count) in enumerate(languages):
         percent = (count / total) * 100
-        bar_len = int(percent / 3) # Scaled down for half width
+        bar_len = int(percent / 4) # Scaled down for left side
         bar_filled = "█" * bar_len
-        bar_empty = " " * (33 - bar_len)
+        bar_empty = " " * (25 - bar_len)
         
         colors = ["#00ccff", "#0099cc", "#006699", "#33ccff", "#66d9ff"]
         color = colors[i % len(colors)]
@@ -149,7 +149,7 @@ def generate_stack(languages):
         svg_content += f'<text x="20" y="{y_pos}" font-size="14" fill="#c9d1d9" xml:space="preserve">{lang.ljust(12)} [<tspan fill="{color}">{bar_filled}</tspan>{bar_empty}]</text>\\n'
 
     # Terminal Section on the right
-    term_x = 380
+    term_x = 410
     term_y = 50
     term_content = [
         "harvind20@github:~",
@@ -183,7 +183,7 @@ def generate_stack(languages):
         </style>
         <rect width="800" height="{height}" class="bg"/>
         <!-- Terminal Frame -->
-        <rect x="360" y="20" width="420" height="{height - 40}" class="term-border"/>
+        <rect x="390" y="20" width="400" height="{height - 40}" class="term-border"/>
         {svg_content}
     </svg>
     """
