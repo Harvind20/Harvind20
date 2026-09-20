@@ -31,9 +31,11 @@ def generate_projects(repos):
             <!-- Language Pill -->
             <rect x="15" y="95" width="80" height="20" class="tag-pill" rx="10"/>
             <text x="55" y="109" text-anchor="middle" class="tag-text" font-size="10">{language}</text>
-            
-            <text x="110" y="109" class="text-subtitle" font-size="10">★ {stars}  updated just now</text>
-            
+            <!-- Star Icon & Info -->
+            <g transform="translate(110, 99)">
+                <path fill="#8b949e" transform="scale(0.7)" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/>
+                <text x="16" y="10" class="text-subtitle" font-size="10">{stars}  updated just now</text>
+            </g>
             <!-- A decorative circular progress or icon on the right -->
             <circle cx="300" cy="80" r="20" fill="transparent" stroke="#30363d" stroke-width="4"/>
             <circle cx="300" cy="80" r="20" fill="transparent" stroke="#58a6ff" stroke-width="4" stroke-dasharray="80" stroke-dashoffset="20"/>

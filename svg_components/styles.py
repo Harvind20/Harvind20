@@ -1,8 +1,6 @@
 def get_cyberpunk_styles():
     return """
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&amp;family=Inter:wght@400;600;800&amp;display=swap');
-        
         .bg { fill: #0d1117; }
         .panel { fill: #161b22; stroke: #30363d; stroke-width: 1px; rx: 8px; }
         .glow-border { 
@@ -11,12 +9,12 @@ def get_cyberpunk_styles():
             stroke-width: 1.5px; 
             rx: 8px; 
         }
-        text { font-family: 'Inter', sans-serif; fill: #c9d1d9; }
-        .text-title { fill: #ffffff; font-weight: 800; }
+        text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; fill: #c9d1d9; }
+        .text-title { fill: #ffffff; font-weight: 600; }
         .text-subtitle { fill: #8b949e; }
-        .text-accent { fill: #58a6ff; font-family: 'Fira Code', monospace; }
-        .text-mono { fill: #3fb950; font-family: 'Fira Code', monospace; }
-        .text-glow { fill: #00ffcc; font-weight: 800; }
+        .text-accent { fill: #58a6ff; font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }
+        .text-mono { fill: #3fb950; font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }
+        .text-glow { fill: #00ffcc; font-weight: 600; }
         
         .tag-pill { fill: transparent; stroke: #30363d; stroke-width: 1px; rx: 12px; }
         .tag-text { fill: #c9d1d9; font-weight: 600; }
